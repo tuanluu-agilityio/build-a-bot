@@ -1,6 +1,14 @@
 <template>
   <div class="part" :class="position">
-    <img :src="selectedPart.src" title="arm" alt="" />
+    <router-link :to="{
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id,
+          partType: this.selectedPart.type,
+        },
+      }">
+      <img @click="showPartInfo()" :src="selectedPart.src" title="arm" alt="" />
+    </router-link>
     <button @click="selectedPreviousPart()" class="prev-selector"></button>
     <button @click="selectedNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -65,17 +73,33 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .part {
   position: relative;
   width:165px;
   height:165px;
   border: 3px solid #aaa;
 }
-.part {
-  img {
-    width: 165px;
-  }
+.sale {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: white;
+  background-color: red;
+  padding: 3px;
+}
+.part-title {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: red;
+  padding-top: 5px;
+  top: -25px;
+}
+.part img{
+  width: 165px;
+  cursor: pointer;
 }
 .top-row {
   display:flex;
@@ -90,7 +114,7 @@ export default {
   justify-content: space-around;
   border-top: none;
 }
-.head {
+.top {
   border-bottom: none;
 }
 .left {
@@ -162,7 +186,16 @@ export default {
   text-align: center;
   width: 100%;
 }
-.sale {
-  color: red;
+.left .prev-selector:after,  .right .prev-selector:after{
+  content: '\25B2'
+}
+.left .next-selector:after, .right .next-selector:after {
+  content: '\25BC'
+}
+.top .prev-selector:after, .bottom .prev-selector:after, .center .prev-selector:after{
+  content: '\25C4'
+}
+.top .next-selector:after, .bottom .next-selector:after, .center .next-selector:after{
+  content: '\25BA'
 }
 </style>
